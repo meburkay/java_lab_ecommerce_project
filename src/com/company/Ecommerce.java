@@ -21,5 +21,43 @@ public class Ecommerce {
 
         Customer customer = StaticConstants.CUSTOMER_LIST.get(scanner.nextInt());
 
+        while(true){
+
+            System.out.println("What would you like to do? Just type id for selection");
+
+            for(int i=0;i< prepareMenuOptions().length;i++){
+                System.out.println(i + "-" + prepareMenuOptions()[i]);
+            }
+
+            int menuSelection = scanner.nextInt();
+
+            switch (menuSelection){
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+            }
+        }
     }
+
+    private static String[] prepareMenuOptions(){
+        return new String[]{"List Categories","List Products","List Discount","See Balance","Add Balance" +
+                "Place an order","See Cart","See order details","See your address","Close App"};
+    }
+
+
 }
