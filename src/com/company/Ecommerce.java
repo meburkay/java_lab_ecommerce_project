@@ -94,12 +94,12 @@ public class Ecommerce {
                     }
                     break;
                 case 5://"Place an order"
-                    Map<Product,Integer> map = new HashMap<>();
-                    cart.setProductMap(map);
+                    Map<Product,Integer> map = new HashMap<>();//Creating empty map for the products that will be added to cart.
+                    cart.setProductMap(map);//We assign the empty map to the cart that we create at the start.
                     while(true) {
-                        System.out.println("Which product you want to add to your cart. For exit product selection Type : exit");
+                        System.out.println("Which product you want to add to your cart. For exit product selection Type : exit");//With foreach loop we go to Database product list and print the products
                         for (Product product : StaticConstants.PRODUCT_LIST) {
-                            try {
+                            try {//because of the exceptions we throw at the methods we use try catch block to handle the exceptions.(getCategoryName-getDeliveryDueDate)
                                 System.out.println(
                                         "id:" + product.getId() + "price:" + product.getPrice() +
                                                 "product category" + product.getCategoryName() +
@@ -110,7 +110,7 @@ public class Ecommerce {
 
                             }
                         }
-                        String productId = scanner.next();
+                        String productId = scanner.next();//Customer choose the product by writing the productId.
 
                         try {
                             Product product = findProductById(productId);
