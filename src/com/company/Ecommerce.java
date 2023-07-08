@@ -6,8 +6,12 @@ import com.company.balance.GiftCardBalance;
 import com.company.category.Category;
 import com.company.discount.Discount;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.UUID;
+
+import static com.company.StaticConstants.DISCOUNT_LIST;
 
 public class Ecommerce {
 
@@ -27,6 +31,8 @@ public class Ecommerce {
         }
 
         Customer customer = StaticConstants.CUSTOMER_LIST.get(scanner.nextInt());
+
+        Cart cart = new Cart(customer);//We create a Cart object for use and assign the chosen customer to it.
 
         while(true){
 
@@ -87,7 +93,43 @@ public class Ecommerce {
                             break;
                     }
                     break;
-                case 5:
+                case 5://"Place an order"
+                    Map<Product,Integer> map = new HashMap<>();
+                    cart.setProductMap(map);
+                    while(true) {
+                        System.out.println("Which product you want to add to your cart. For exit product selection Type : exit");
+                        for (Product product : StaticConstants.PRODUCT_LIST) {
+                            try {
+                                System.out.println(
+                                        "id:" + product.getId() + "price:" + product.getPrice() +
+                                                "product category" + product.getCategoryName() +
+                                                "stock:" + product.getRemainingStock() +
+                                                "product delivery due:" + product.getDeliveryDueDate());
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+
+                            }
+                        }
+                        String productId = scanner.next();
+
+                        try {
+                            Product product = findProductById(productId);
+                            if (!putItemToCartIfStockAvailable(cart, product)) {
+                                System.out.println("Stock is insufficient. Please try again");
+                                continue;
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Product does not exist. please try again");
+                            continue;
+                        }
+
+                        System.out.println("Do you want to add more product. Type Y for adding more, N for exit");
+                        String decision = scanner.next();
+                        if(!decision.equals("Y")){
+                            break;
+                        }
+                    }
+
                     break;
                 case 6:
                     break;
@@ -99,6 +141,35 @@ public class Ecommerce {
                     break;
             }
         }
+    }
+
+    private static boolean putItemToCartIfStockAvailable(Cart cart, Product product) {
+
+        System.out.println("Please provide product count:");
+        Scanner scanner = new Scanner(System.in);
+        int count = scanner.nextInt();
+
+        Integer cartCount = cart.getProductMap().get(product);//Control the cart product map if the choosen product exist or not.
+        //Here ad product if we have earlier. We add our count to the earlier count.
+        if(cartCount !=null && product.getRemainingStock() > cartCount+count){
+            cart.getProductMap().put(product,cartCount+count);
+            return true;
+            //Here we add product if it does not exist from earlier.
+        }else if(product.getRemainingStock()>=count){
+            cart.getProductMap().put(product,count);
+            return true;
+        }
+        return false; //If the stock is not enough we return false. We can not add the product to chart.
+
+    }
+
+    private static Product findProductById(String productId) throws Exception {
+        for(Product product : StaticConstants.PRODUCT_LIST){
+            if (product.getId().toString().equals(productId)) {
+                return product;
+            }
+        }
+        throw new Exception("Product not found");
     }
 
     private static CustomerBalance findCustomerBalance(UUID customerId){
