@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.category.Category;
+import com.company.discount.Discount;
 
 import java.util.Scanner;
 
@@ -48,7 +49,10 @@ public class Ecommerce {
                         System.out.println("Product could not printed because category not found for product name:" + e.getMessage().split(",")[1] );
                     }
                     break;
-                case 2:
+                case 2: //list discounts
+                    for(Discount discount : StaticConstants.DISCOUNT_LIST){
+                        System.out.println("Discount Name: " + discount.getName() + "discount threshold amount: " + discount.getThresholdAmount());
+                    }
                     break;
                 case 3:
                     break;
