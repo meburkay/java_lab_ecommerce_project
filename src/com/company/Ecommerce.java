@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.category.Category;
+
 import java.util.Scanner;
 
 public class Ecommerce {
@@ -32,7 +34,10 @@ public class Ecommerce {
             int menuSelection = scanner.nextInt();
 
             switch (menuSelection){
-                case 0:
+                case 0://list categories
+                    for(Category category : StaticConstants.CATEGORY_LIST){
+                        System.out.println("Category Code:" + category.generateCategoryCode() + " category name:" + category.getName());
+                    }
                     break;
                 case 1:
                     break;
@@ -49,6 +54,8 @@ public class Ecommerce {
                 case 7:
                     break;
                 case 8:
+                    break;
+                case 9:
                     break;
             }
         }
