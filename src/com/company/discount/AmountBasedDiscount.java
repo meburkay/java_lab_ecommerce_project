@@ -14,7 +14,7 @@ public class AmountBasedDiscount extends Discount{
 
     @Override
     public Double calculateCartAmountAfterDiscountApplied(Double amount) {
-        return null;
+        return amount - discountAmount;
     }
 
     public Double getDiscountAmount() {

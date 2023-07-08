@@ -13,7 +13,7 @@ public class RateBasedDiscount extends Discount{
 
     @Override
     public Double calculateCartAmountAfterDiscountApplied(Double amount) {
-        return null;
+        return amount - (amount * rateAmount / 100) ;
     }
 
     public Double getRateAmount() {

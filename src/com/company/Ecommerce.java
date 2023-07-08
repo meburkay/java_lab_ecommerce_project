@@ -175,10 +175,19 @@ public class Ecommerce {
                     printOrdersByCustomerId(customer.getId());
                     break;
                 case 8:
+                    printAddressByCustomerId(customer);
                     break;
                 case 9:
                     break;
             }
+        }
+    }
+
+    private static void printAddressByCustomerId(Customer customer) {
+        for (Address address : customer.getAddress()) {
+            System.out.println(" Street Name: " + address.getStreetName() +
+                    " Street Number: " + address.getStreetNumber() + "ZipCode:  "
+                    + address.getZipCode() + " State: " + address.getState());
         }
     }
 
