@@ -4,6 +4,7 @@ import com.company.balance.Balance;
 import com.company.category.Category;
 import com.company.category.Electronic;
 import com.company.discount.Discount;
+import com.company.order.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class StaticConstants {
     public static final List<Balance> CUSTOMER_BALANCE_LIST = new ArrayList<>();
     public static final List<Balance> GIFT_CARD_BALANCE_LIST = new ArrayList<>();
     public static final List<Discount> DISCOUNT_LIST = new ArrayList<>();
+    public static final List<Order> ORDER_LIST = new ArrayList<>();
 
 
 }

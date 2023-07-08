@@ -5,6 +5,9 @@ import com.company.balance.CustomerBalance;
 import com.company.balance.GiftCardBalance;
 import com.company.category.Category;
 import com.company.discount.Discount;
+import com.company.order.Order;
+import com.company.order.OrderService;
+import com.company.order.OrderServiceImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +15,7 @@ import java.util.Scanner;
 import java.util.UUID;
 
 import static com.company.StaticConstants.DISCOUNT_LIST;
+import static com.company.StaticConstants.ORDER_LIST;
 
 public class Ecommerce {
 
@@ -129,11 +133,46 @@ public class Ecommerce {
                             break;
                         }
                     }
+                    System.out.println("seems there are discount options. Do you want to see and apply to your cart if it is applicable. For no discount type no");
+                    for (Discount discount : DISCOUNT_LIST) {
+                        System.out.println("discount id " + discount.getId() + " discount name: " + discount.getName());
+                    }
+                    String discountId = scanner.next();
+                    if (!discountId.equals("no")) {
+                        try {
+                            Discount discount = findDiscountById(discountId);
+                            if (discount.decideDiscountIsApplicableToCart(cart)) {
+                                cart.setDiscountId(discount.getId());
+                            }
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
 
+                    }
+
+                    OrderService orderService = new OrderServiceImpl();
+                    String result = orderService.placeOrder(cart);
+                    if (result.equals("Order has been placed successfully")) {
+                        System.out.println("Order is successful");
+                        updateProductStock(cart.getProductMap());
+                        cart.setProductMap(new HashMap<>());
+                        cart.setDiscountId(null);
+                    } else {
+                        System.out.println(result);
+                    }
                     break;
-                case 6:
+                case 6://"See Cart"
+                    System.out.println("Your Cart");
+                    if (!cart.getProductMap().keySet().isEmpty()) {
+                        for (Product product : cart.getProductMap().keySet()) {
+                            System.out.println("product name: " + product.getName() + " count: " + cart.getProductMap().get(product));
+                        }
+                    } else {
+                        System.out.println("Your cart is empty");
+                    }
                     break;
-                case 7:
+                case 7://"See order details"
+                    printOrdersByCustomerId(customer.getId());
                     break;
                 case 8:
                     break;
@@ -143,13 +182,35 @@ public class Ecommerce {
         }
     }
 
+    private static Discount findDiscountById(String discountId) throws Exception {
+        for (Discount discount : DISCOUNT_LIST) {
+            if (discount.getId().toString().equals(discountId)) {
+                return discount;
+            }
+        }
+        throw new Exception("Discount couldn't applied because couldn't found");
+    }
+
+    private static void updateProductStock(Map<Product, Integer> map) {
+        for (Product product : map.keySet()) {
+            product.setRemainingStock(product.getRemainingStock() - map.get(product));
+        }
+    }
+
+    private static void printOrdersByCustomerId(UUID customerId) {
+        for (Order order : ORDER_LIST) {
+            if (order.getCustomerId().toString().equals(customerId.toString())) {
+                System.out.println("Order status: " + order.getOrderStatus() + " order amount " + order.getPaidAmount() + " order date " + order.getOrderDate());
+            }
+        }
+    }
     private static boolean putItemToCartIfStockAvailable(Cart cart, Product product) {
 
         System.out.println("Please provide product count:");
         Scanner scanner = new Scanner(System.in);
         int count = scanner.nextInt();
 
-        Integer cartCount = cart.getProductMap().get(product);//Control the cart product map if the choosen product exist or not.
+        Integer cartCount = cart.getProductMap().get(product);//Control the cart product map if the chosen product exist or not.
         //Here ad product if we have earlier. We add our count to the earlier count.
         if(cartCount !=null && product.getRemainingStock() > cartCount+count){
             cart.getProductMap().put(product,cartCount+count);

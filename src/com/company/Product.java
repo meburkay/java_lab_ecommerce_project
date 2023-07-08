@@ -43,6 +43,10 @@ public class Product {
         return remainingStock;
     }
 
+    public void setRemainingStock(Integer remainingStock) {
+        this.remainingStock = remainingStock;
+    }
+
     public UUID getCategoryId() {
         return categoryId;
     }
