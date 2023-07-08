@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Ecommerce {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         DataGenerator.createCustomer();
         DataGenerator.createCategory();
@@ -39,7 +39,10 @@ public class Ecommerce {
                         System.out.println("Category Code:" + category.generateCategoryCode() + " category name:" + category.getName());
                     }
                     break;
-                case 1:
+                case 1: //list products  //product name, product category name
+                    for(Product product : StaticConstants.PRODUCT_LIST){
+                        System.out.println("Product Name:" + product.getName() + "Product Category Name:" + product.getCategoryName());
+                    }
                     break;
                 case 2:
                     break;

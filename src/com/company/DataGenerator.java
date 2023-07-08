@@ -56,10 +56,13 @@ public class DataGenerator {
                 new Product(UUID.randomUUID(),"XBOX",120.34,15,15,StaticConstants.CATEGORY_LIST.get(0).getId());
         Product product3=
                 new Product(UUID.randomUUID(),"Chair",30.87,85,85,StaticConstants.CATEGORY_LIST.get(1).getId());
+        Product product4=
+                new Product(UUID.randomUUID(),"Milk",2.87,185,85,UUID.randomUUID());
 
         StaticConstants.PRODUCT_LIST.add(product1);
         StaticConstants.PRODUCT_LIST.add(product2);
         StaticConstants.PRODUCT_LIST.add(product3);
+        StaticConstants.PRODUCT_LIST.add(product4);
 
     }
 
